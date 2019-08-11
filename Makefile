@@ -8,11 +8,7 @@ lib:
 		--eval '(asdf:make :game-engine)' \
 		--eval '(quit)'
 
-deps:
-	sbcl \
-		--eval '(quit)'
-
-test:
+tests:
 	sbcl \
 		--eval '(require :quicklisp)' \
 		--eval '(ql:quickload :prove)' \

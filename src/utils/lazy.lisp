@@ -25,8 +25,16 @@
           do (push (funcall stream res) res))
     (reverse res)))
 
-(defun list-stream (list) (when list (cons (car list) (lambda () (list-stream list)))))
+(defun list-stream (list)
+  (when list (cons (car list) (lambda () (list-stream (cdr list))))))
 
 (defun map-stream (fn stream)
-  (cons (funcall fn (car stream))
-        (lambda () (map-stream fn (funcall (cdr stream))))))
+  (if (funcall (cdr stream))
+      (cons (funcall fn (car stream)) (lambda () (map-stream fn (funcall (cdr stream)))))
+      (cons (funcall fn (car stream)) nil)))
+
+(defun take-list (n list)
+  (cond ((= n 0) nil)
+        ((null list) list)
+        ((null (cdr list)) (cons (car list) nil))
+        (t (cons (car list) (take-list (1- n) (funcall (cdr list)))))))
