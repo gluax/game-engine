@@ -1,3 +1,10 @@
-(defpackage #:salvage
+(defpackage #:game-engine
   (:use #:cl)
-  (:export #:main))
+  (:export #:memoize
+           #:make-stream
+           #:take
+           #:next
+           #:take-until
+           #:f-take
+           #:f-take-until
+           #:file-string))

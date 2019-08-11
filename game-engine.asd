@@ -1,14 +1,12 @@
-(asdf:defsystem #:salvage
+(asdf:defsystem #:game-engine
   :version "0.0.1"
   :author "Jonathan Pavlik"
-  :license ""
-  :description "A game."
+  :license "GPL v3"
+  :description "A game engine."
   :long-description ""
   :defsystem-depends-on ()
   :depends-on ()
-  :build-operation :program-op
-  :build-pathname "main"
-  :entry-point "salvage:main"
+  :build-operation :compile-op
   :serial t
   :components ((:module "src"
                 :components
@@ -19,4 +17,4 @@
                           ((:file "lazy")))
                  )
                 ))
-  :in-order-to ((asdf:test-op (asdf:load-op salvage-test))))
+  :in-order-to ((test-op (load-op game-engine-test))))

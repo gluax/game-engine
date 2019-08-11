@@ -1,4 +1,4 @@
-(in-package #:salvage)
+(in-package #:game-engine)
 
 (defun main ()
-  (format t "Hello Salvage!~%~a" (take 10 (integers))))
+  (format t "Hello Salvage!~%~a" 10))
