@@ -1,14 +1,5 @@
 (in-package #:game-engine)
 
-(defmacro memoize (name args body)
-  (let ((hash-name (gensym)))
-    `(let ((,hash-name (make-hash-table :test 'equal)))
-       (defun ,name ,args
-         (or (gethash (list ,@args) ,hash-name)
-             (setf (gethash (list ,@args) ,hash-name)
-                   ,body))))))
-
-
 (defun make-stream (fn init)
   (let (v)
     (lambda () (setf v (if v (funcall fn v) init)))))
@@ -34,14 +25,8 @@
           do (push (funcall stream res) res))
     (reverse res)))
 
-(defun file-string (path)
-  (with-open-file (stream path)
-    (let ((data (make-string (file-length stream))))
-      (read-sequence data stream)
-      data)))
+(defun list-stream (list) (when list (cons (car list) (lambda () (list-stream list)))))
 
-(defun file-get-lines (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil)
-          while line
-          collect line)))
+(defun map-stream (fn stream)
+  (cons (funcall fn (car stream))
+        (lambda () (map-stream fn (funcall (cdr stream))))))
