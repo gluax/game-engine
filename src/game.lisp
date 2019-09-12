@@ -1,4 +1,27 @@
 (in-package #:game-engine)
 
+(new-component "ename" (ename :accessor ename))
+(new-component "health" (hp :accessor hp))
+(new-component "attack" (atk :accessor atk))
+(new-component "speed" (sv :accessor sv))
+
+(defun enemy-assemblage (name hp atk sv)
+  (let ((entity (make-entity))
+        (ename (make-ename-component name))
+        (health (make-health-component hp))
+        (atk (make-attack-component atk))
+        (speed (make-speed-component sv)))
+    (add-component entity ename)
+    (add-component entity health)
+    (add-component entity atk)
+    (add-component entity speed)
+    (add-to-system entity :ENEMY)))
+
+(defvar *lock* (bt:make-lock))
+(new-parallel-system ENEMY (bt:with-lock-held (*lock*) (format t "A ~A appears with hp: ~D atk: ~D sv: ~D~%" (ename (gethash :ENAME value)) (hp (gethash :HEALTH value)) (atk (gethash :ATTACK value)) (sv (gethash :SPEED value)))))
+
 (defun main ()
-  (format t "Hello Salvage!~%~a" 10))
+  (enemy-assemblage "cat" 7 3 10)
+  (enemy-assemblage "cow" 15 5 3)
+  (format t "Hello Game Engine!~%")
+  (join-parallel-system (enemy-parallel-system)))

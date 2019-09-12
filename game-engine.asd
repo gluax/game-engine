@@ -5,16 +5,24 @@
   :description "A game engine."
   :long-description ""
   :defsystem-depends-on ()
-  :depends-on ()
-  :build-operation :compile-op
+  :depends-on (#:bordeaux-threads)
+  :build-operation :program-op
+  :build-pathname "game"
+  :entry-point "game-engine:main"
   :serial t
   :components ((:module "src"
                 :components
                 ((:file "package")
-                 (:file "game")
+                 (:module "ecs"
+                  :components
+                          ((:file "components")
+                           (:file "entities")
+                           (:file "systems")))
                  (:module "utils"
                   :components
-                          ((:file "lazy")))
+                          ((:file "lazy")
+                           (:file "misc")))
+                 (:file "game")
                  )
                 ))
   :in-order-to ((test-op (load-op game-engine-test))))
